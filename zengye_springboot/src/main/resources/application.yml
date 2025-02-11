@@ -1,0 +1,29 @@
+server:
+  port: 8888
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/zengye?serverTimezone=GMT%2b8
+    username: root
+    password: 211317wt
+  servlet:
+    multipart:
+      max-file-size: 30MB
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 211317wt
+    database: 0          #数据库索引
+    lettuce:
+      pool:
+        min-idle: 10
+        max-idle: 100
+        max-active: 100
+        max-wait: 10000
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,0 +1,8 @@
+package com.example.zengye_springboot.mapper;
+
+import com.example.zengye_springboot.entity.{entityName};
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+public interface {entityName}Mapper extends BaseMapper<{entityName}> {
+
+}
