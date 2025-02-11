@@ -6,4 +6,5 @@ public class RedisConstants {
 
     public static final String GOOD_TOKEN_KEY = "good:id:";
     public static final Integer GOOD_TOKEN_TTL = 30;
+
 }

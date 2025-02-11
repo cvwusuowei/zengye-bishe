@@ -6,22 +6,29 @@
   <div class="main-box">
 
     <div class="block" style="width: 1200px ;margin: 10px auto">
-<!--      类别菜单-->
+    <!--      类别菜单-->
       <div class="good-menu">
-        <ul v-for="(item,index) in icons" :key="index">
-          <li>
-            <i class="iconfont" v-html="item.value"></i>
-            <!--              跳转到goodList页面，参数为类别id-->
-            <router-link :to="{path: '/goodlist',query: {categoryId:  item.categories[0].id }}">
-              <a href="/person"><span>{{ item.categories[0].name }}</span></a>
-            </router-link>
-            <span>  /  </span>
-            <router-link :to="{path: '/goodList',query: {categoryId:  item.categories[1].id}}">
-              <a href="/person"><span>{{  item.categories[1].name}}</span></a>
-            </router-link>
+        <ul>
+          <li v-for="(item, index) in icons" :key="index">
+            <!-- 遍历每个 item 下的 icons -->
+            <span v-for="(icon, iconIndex) in item.icons" :key="'icon-' + iconIndex">
+        <i class="iconfont" v-html="icon"></i>
+      </span>
+
+            <!-- 遍历每个 item 下的 categories -->
+            <span v-for="(category, catIndex) in item.categories" :key="'category-' + catIndex">
+        <router-link :to="{ path: '/goodlist', query: { categoryId: category.id } }">
+          <span>{{ category.name }}</span>
+        </router-link>
+
+              <!-- 在分类之间添加 " / " 分隔符，除最后一个外 -->
+        <span v-if="catIndex < item.categories.length - 1"> / </span>
+      </span>
           </li>
         </ul>
       </div>
+
+
       <!--轮播图-->
       <div>
         <el-carousel height="370px" style="border-radius:20px;width: 600px">

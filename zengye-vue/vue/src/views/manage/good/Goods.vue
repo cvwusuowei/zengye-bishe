@@ -169,9 +169,6 @@ export default {
       this.load()
     },
     add() {
-      // this.entity = {}
-      // this.fileList = []
-      // this.dialogFormVisible = true
       this.$router.push("goodInfo")
     },
     edit(obj) {

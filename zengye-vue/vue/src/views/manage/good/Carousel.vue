@@ -43,8 +43,7 @@
           <el-input v-model="entity.goodId" autocomplete="off" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="轮播顺序" label-width="150px">
-<!--          <el-input v-model="entity.showOrder" autocomplete="off" style="width: 80%"></el-input>-->
-          <el-select v-model="entity.showOrder">
+        <el-select v-model="entity.showOrder">
             <el-option v-for="index in tableData.length" :key="index" :label="index" :value="index">
             </el-option>
           </el-select>

@@ -2,7 +2,7 @@
   <div class="navagation">
     <el-row>
       <el-col :span="4">
-        <div style="font-size: 20px; font-weight: bold; text-align: center" ><a style="color: #00b7ff;" href="/">曾耶校园商城</a></div>
+        <div style="font-size: 20px; font-weight: bold; text-align: center" ><a style="color: #00b7ff;" href="/">曾耶健身商城</a></div>
       </el-col>
       <el-col :span="14">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>

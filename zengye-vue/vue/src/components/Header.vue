@@ -22,7 +22,6 @@
     </span>
       <el-dropdown-menu slot="dropdown" style="text-align: center">
         <el-dropdown-item>
-<!--         <router-link to="/person">个人信息</router-link>-->
           <div @click="$router.push('/manage/person')">个人信息</div>
         </el-dropdown-item>
         <el-dropdown-item>

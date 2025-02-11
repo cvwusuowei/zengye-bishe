@@ -84,12 +84,6 @@ const router = new VueRouter({
 
 //beforeEach是router的钩子函数，在进入路由前执行
 router.beforeEach((to, from, next) => {
-  // if(to.path === '/manage'){
-  //   let user = localStorage.getItem("user");
-  //   if(!user.token){
-  //     next('/login');
-  //   }
-  // }
   let role;
   let allow = false;
   if(to.meta.requireAuth===true){

@@ -1,6 +1,7 @@
 package com.example.zengye_springboot.controller;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.zengye_springboot.annotation.Authority;
 import com.example.zengye_springboot.common.Result;
 import com.example.zengye_springboot.entity.AuthorityType;
@@ -49,7 +50,23 @@ public class CartController {
     @PostMapping
     public Result save(@RequestBody Cart cart) {
         cart.setCreateTime(DateUtil.now());
-        cartService.saveOrUpdate(cart);
+
+        // 检查是否已经有该商品与用户的组合
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("good_id", cart.getGoodId());
+        queryWrapper.eq("user_id", cart.getUserId());
+
+        Cart existingCart = cartService.getOne(queryWrapper);  // 查询已存在的记录
+
+        if (existingCart != null) {
+            // 如果记录已存在，则更新数量
+            existingCart.setCount(existingCart.getCount() + cart.getCount());
+            cartService.updateById(existingCart);
+        } else {
+            // 如果记录不存在，则插入新记录
+            cartService.save(cart);
+        }
+
         return Result.success();
     }
 

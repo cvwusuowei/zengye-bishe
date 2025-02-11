@@ -4,17 +4,16 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.zengye_springboot.constants.Constants;
+import com.example.zengye_springboot.entity.Cart;
 import com.example.zengye_springboot.entity.Order;
 import com.example.zengye_springboot.entity.OrderGoods;
 import com.example.zengye_springboot.entity.OrderItem;
 import com.example.zengye_springboot.exception.ServiceException;
-import com.example.zengye_springboot.mapper.GoodMapper;
-import com.example.zengye_springboot.mapper.OrderGoodsMapper;
-import com.example.zengye_springboot.mapper.OrderMapper;
-import com.example.zengye_springboot.mapper.StandardMapper;
+import com.example.zengye_springboot.mapper.*;
 import com.example.zengye_springboot.utils.TokenUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +37,8 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
     private CartService  cartService;
     @Resource
     private GoodMapper goodMapper;
+    @Resource
+    private CartMapper cartMapper;
     @Transactional
     public String saveOrder(Order order) {
         order.setUserId(TokenUtils.getCurrentUser().getId());
@@ -61,7 +62,7 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
             //插入到order_good表
             orderGoodsMapper.insert(orderGoods);
         }
-        System.out.println(goods);
+        System.err.println(goods);
         return orderNo;
     }
     //给订单付款
@@ -86,6 +87,16 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         BigDecimal totalPrice = one.getTotalPrice();
         goodMapper.saleGood(goodId,count,totalPrice);
         // **删除购物车中已支付的商品**
+        //查询OrderGoods中的goodid
+        LambdaQueryWrapper<OrderGoods> orderGoodsLambdaQueryWrapper  = new LambdaQueryWrapper<>();
+        orderGoodsLambdaQueryWrapper.eq(OrderGoods::getOrderId,one.getId());
+        OrderGoods orderGoods = orderGoodsMapper.selectOne(orderGoodsLambdaQueryWrapper);
+
+        //根据goodid和userid删除购物车信息
+        LambdaQueryWrapper<Cart> cartLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        cartLambdaQueryWrapper.eq(Cart::getGoodId,orderGoods.getGoodId())
+                        .eq(Cart::getUserId,one.getUserId());
+        cartMapper.delete(cartLambdaQueryWrapper);
     }
 
     public List<Map<String,Object>> selectByUserId(int userId) {
